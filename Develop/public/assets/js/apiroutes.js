@@ -1,29 +1,48 @@
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
+const {
+    v4: uuidv4
+} = require('uuid');
 
 const dbFile = require('../../../db/db.json');
 
 function jsonReader(filePath, cb) {
     fs.readFile(filePath, (err, fileData) => {
         if (err) {
-            return cb && cb (err)
+            return cb && cb(err)
         }
         try {
             const object = JSON.parse(fileData)
-            return cb && cb (null, object)
+            return cb && cb(null, object)
         } catch (err) {
-            return cb && cb (err)
+            return cb && cb(err)
         }
     })
 }
 
-console.log(dbFile);
-
 module.exports = (app) => {
 
-    app.delete
+    app.delete('/api/notes/:id', (req, res) => {
+        jsonReader('../../../db/db.json', (err, note) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            
+            for (let [i, item] of note.entries()) {
+                if (item.id === req.params.id) {
+                    note.splice(i, 1);
+                    console.log(note);
+                    fs.writeFile('../../../db/db.json', JSON.stringify(note), err => {
+                        if (err) throw err;
+                    })
+                } else {
+                    console.log("Nothing to be deleted");
+                }
+            }
+        })
+    })
 
-    app.post('/api/notes', (req, res) => {
+    app.post('/api/notes/', (req, res) => {
         var newObj = {
             "title": req.body.title,
             "text": req.body.text,
@@ -37,12 +56,13 @@ module.exports = (app) => {
     })
 
     app.get('/api/notes', (req, res) => {
-                jsonReader('../../../db/db.json', (err, note) => {
-                    if (err) {
-                        console.log(err);
-                        return;
-                    }
-                    res.send(note);
-                })
-            })
+        jsonReader('../../../db/db.json', (err, note) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            res.send(note);
+        })
+    })
+
 }

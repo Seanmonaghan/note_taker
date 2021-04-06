@@ -55,11 +55,13 @@ const renderActiveNote = () => {
   hide(saveNoteBtn);
 
   if (activeNote.id) {
-    noteTitle.setAttribute('readonly', true);
-    noteText.setAttribute('readonly', true);
+    noteTitle.setAttribute('readOnly', true);
+    noteText.setAttribute('readOnly', true);
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
+    noteTitle.removeAttribute('readOnly');
+    noteText.removeAttribute('readOnly');
     noteTitle.value = '';
     noteText.value = '';
   }
