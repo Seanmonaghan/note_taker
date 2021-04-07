@@ -3,7 +3,7 @@ const {
     v4: uuidv4
 } = require('uuid');
 
-const dbFile = require('../../../db/db.json');
+const dbFile = require('../db/db.json');
 
 function jsonReader(filePath, cb) {
     fs.readFile(filePath, (err, fileData) => {
@@ -22,7 +22,7 @@ function jsonReader(filePath, cb) {
 module.exports = (app) => {
 
     app.delete('/api/notes/:id', (req, res) => {
-        jsonReader('../../../db/db.json', (err, note) => {
+        jsonReader('public/assets/db/db.json', (err, note) => {
             if (err) {
                 console.log(err);
                 return;
@@ -32,7 +32,7 @@ module.exports = (app) => {
                 if (item.id === req.params.id) {
                     note.splice(i, 1);
                     console.log(note);
-                    fs.writeFile('../../../db/db.json', JSON.stringify(note), err => {
+                    fs.writeFile('public/assets/db/db.json', JSON.stringify(note), err => {
                         if (err) throw err;
                     })
                 } else {
@@ -49,14 +49,14 @@ module.exports = (app) => {
             "id": uuidv4()
         };
         dbFile.push(newObj);
-        fs.writeFile("../../../db/db.json", JSON.stringify(dbFile), err => {
+        fs.writeFile("public/assets/db/db.json", JSON.stringify(dbFile), err => {
             if (err) throw err;
             console.log("Done Writing")
         })
     })
 
     app.get('/api/notes', (req, res) => {
-        jsonReader('../../../db/db.json', (err, note) => {
+        jsonReader('public/assets/db/db.json', (err, note) => {
             if (err) {
                 console.log(err);
                 return;
