@@ -35,7 +35,7 @@ If you are interested in doing so, simply clone or fork the project to your loca
 
 ## Site Overview
 
-[Video Link to Application Tests](https://drive.google.com/file/d/1JlGndw7mq_XuKe3hd9z4QBMmcBXqaM4g/view?usp=sharing)
+[Video Link to Application Overview](https://drive.google.com/file/d/1JlGndw7mq_XuKe3hd9z4QBMmcBXqaM4g/view?usp=sharing)
 
 The above video overviews how the app is used by the user.  The user can input text into the boxes with the placeholder 'Note Title' and 'Note Text' and then a save icon will appear on the top right of the screen which will write the information provided onto the db.json file, as well as render it upon the left hand side of the screen as a saved note after a refresh.  
 
