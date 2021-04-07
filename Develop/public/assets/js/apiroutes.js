@@ -31,12 +31,12 @@ module.exports = (app) => {
             for (let [i, item] of note.entries()) {
                 if (item.id === req.params.id) {
                     note.splice(i, 1);
-                    console.log(note);
+                    console.log("Note Deleted");
                     fs.writeFile('../../../db/db.json', JSON.stringify(note), err => {
                         if (err) throw err;
                     })
                 } else {
-                    console.log("Nothing to be deleted");
+                    
                 }
             }
         })
