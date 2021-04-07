@@ -2,6 +2,7 @@ const fs = require('fs');
 const {
     v4: uuidv4
 } = require('uuid');
+const util = require('util');
 
 const dbFile = require('../db/db.json');
 
@@ -27,7 +28,7 @@ module.exports = (app) => {
                 console.log(err);
                 return;
             }
-            
+
             for (let [i, item] of note.entries()) {
                 if (item.id === req.params.id) {
                     note.splice(i, 1);
@@ -35,24 +36,37 @@ module.exports = (app) => {
                     fs.writeFile('public/assets/db/db.json', JSON.stringify(note), err => {
                         if (err) throw err;
                     })
+                    
                 } else {
                     console.log("Nothing to be deleted");
                 }
             }
+            return;
         })
     })
 
     app.post('/api/notes/', (req, res) => {
-        var newObj = {
-            "title": req.body.title,
-            "text": req.body.text,
-            "id": uuidv4()
-        };
-        dbFile.push(newObj);
-        fs.writeFile("public/assets/db/db.json", JSON.stringify(dbFile), err => {
-            if (err) throw err;
-            console.log("Done Writing")
+        jsonReader('public/assets/db/db.json', (err, note) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            res.send(note);
+            console.log(note);
+            var newObj = {
+                "title": req.body.title,
+                "text": req.body.text,
+                "id": uuidv4()
+            };
+            dbFile.push(newObj);
+            fs.writeFile("public/assets/db/db.json", JSON.stringify(dbFile), err => {
+                if (err) throw err;
+                console.log("Done Writing")
+                return;
+            })
         })
+        return;
+
     })
 
     app.get('/api/notes', (req, res) => {
@@ -62,6 +76,7 @@ module.exports = (app) => {
                 return;
             }
             res.send(note);
+            return;
         })
     })
 
